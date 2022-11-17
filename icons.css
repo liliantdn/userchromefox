@@ -1,0 +1,9 @@
+.themed-icon .toolbarbutton-icon {
+  padding: 6.5px !important;
+}
+#sidebar-button {
+  list-style-image: url("icons/refresh.svg") !important;
+}
+#sidebar-button .toolbarbutton-icon {
+  padding: 6.5px !important;
+}

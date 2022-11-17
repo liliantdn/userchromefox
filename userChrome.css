@@ -1,0 +1,188 @@
+body {
+  --tab-block-margin: 0px;
+  --tab-border-radius: 10px;
+  --inline-tab-padding: 12px;
+  --tab-block-margin: 0;
+  /*5px 0 for top padding*/
+  --tab-min-height: 34px;
+  --toolbarbutton-border-radius: 20px;
+  --urlbar-icon-border-radius: 20px;
+  --toolbarbutton-hover-background: #EEEEEE;
+}
+#tabbrowser-tabs ~ #alltabs-button {
+  display: none !important;
+}
+#TabsToolbar {
+  background: #DEE1E6 !important;
+}
+.titlebar-spacer[type="pre-tabs"] {
+  display: none;
+}
+#TabsToolbar .toolbarbutton-1 > .toolbarbutton-icon,
+#TabsToolbar .toolbarbutton-1 > .toolbarbutton-text,
+#TabsToolbar .toolbarbutton-1 > .toolbarbutton-badge-stack {
+  height: calc(2 * 5px + 16px) !important;
+  width: calc(2 * 5px + 16px) !important;
+  padding: 5px !important;
+  border-radius: 50% !important;
+  transition: all 200ms cubic-bezier(0, 0.5, 0, 1), background-color 400ms cubic-bezier(0, 0.5, 0, 1);
+}
+#TabsToolbar .toolbarbutton-1:not([disabled="true"], [checked], [open], :active):hover > .toolbarbutton-icon,
+#TabsToolbar .toolbarbutton-1:not([disabled="true"], [checked], [open], :active):hover > .toolbarbutton-text,
+#TabsToolbar .toolbarbutton-1:not([disabled="true"], [checked], [open], :active):hover > .toolbarbutton-badge-stack {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
+#TabsToolbar .toolbarbutton-1:not([disabled="true"]):is([open], [checked], :hover:active) > .toolbarbutton-icon,
+#TabsToolbar .toolbarbutton-1:not([disabled="true"]):is([open], [checked], :hover:active) > .toolbarbutton-text,
+#TabsToolbar .toolbarbutton-1:not([disabled="true"]):is([open], [checked], :hover:active) > .toolbarbutton-badge-stack {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+  transition: all 0ms !important;
+}
+#tabs-newtab-button {
+  margin-left: 5px !important;
+}
+#tabbrowser-arrowscrollbox {
+  padding-left: 8px;
+  --tab-min-width: 64px;
+}
+.tabbrowser-tab {
+  padding: 0px !important;
+  overflow-clip-margin: 10px !important;
+}
+.tabbrowser-tab::before,
+.tabbrowser-tab::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  bottom: 0;
+  opacity: 0;
+  background: #EAECEF;
+  transition: opacity 400ms cubic-bezier(0, 0.5, 0, 1);
+}
+.tabbrowser-tab::before {
+  left: -10px;
+  -webkit-mask-image: radial-gradient(circle calc(10px / 2) at 0 0, transparent 0, transparent 10px, black calc(10px + 1px));
+}
+.tabbrowser-tab::after {
+  right: -10px;
+  -webkit-mask-image: radial-gradient(circle calc(10px / 2) at 10px 0, transparent 0, transparent 10px, black calc(10px + 1px));
+}
+.tabbrowser-tab:hover {
+  position: relative;
+}
+.tabbrowser-tab:hover::before,
+.tabbrowser-tab:hover::after {
+  opacity: 1;
+}
+.tabbrowser-tab:active::before,
+.tabbrowser-tab[visuallyselected="true"]::before,
+.tabbrowser-tab:active::after,
+.tabbrowser-tab[visuallyselected="true"]::after {
+  opacity: 1;
+  background: #fff;
+}
+#tabbrowser-tabs:not([movingtab]) .tabbrowser-tab:not([pinned]) {
+  transition: min-width 250ms cubic-bezier(0.2, 0, 0, 1), max-width 250ms cubic-bezier(0.2, 0, 0, 1) !important;
+}
+.tabbrowser-tab:not([labelendaligned], :hover) > .tab-stack > .tab-content > .tab-close-button {
+  width: 24px !important;
+  padding-left: 7px !important;
+}
+.tab-close-button {
+  transition: width 100ms ease, -webkit-padding-start 100ms ease;
+  transition: width 100ms ease, padding-inline-start 100ms ease;
+  transition: width 100ms ease, padding-inline-start 100ms ease, -webkit-padding-start 100ms ease;
+}
+.tab-close-button:hover,
+.tab-close-button:active {
+  border-radius: 50% !important;
+  transition: all 0ms !important;
+}
+.tab-background {
+  height: 100% !important;
+  border-radius: 10px 10px 0 0 !important;
+  box-shadow: -1px 0 0 rgba(0, 0, 0, 0.01) inset;
+  background-color: #EAECEF !important;
+  opacity: 0;
+  transition: opacity 400ms cubic-bezier(0, 0.5, 0, 1);
+}
+/* .tab-content{
+  padding-top: 3px;
+} */
+#TabsToolbar #firefox-view-button:hover:not([open]) > .toolbarbutton-icon,
+.tabbrowser-tab:hover > .tab-stack > .tab-background:not([selected="true"], [multiselected]) {
+  background-color: #EAECEF !important;
+  opacity: 1;
+}
+#TabsToolbar #firefox-view-button[open] > .toolbarbutton-icon,
+#tabbrowser-tabs:not([noshadowfortests]) .tab-background:is([selected], [multiselected]) {
+  box-shadow: none !important;
+}
+#TabsToolbar #firefox-view-button[open] > .toolbarbutton-icon,
+.tab-background:is([selected],
+  [multiselected]) {
+  background: #fff !important;
+  opacity: 1;
+  transition: 0ms;
+}
+.tab-content {
+  padding: 2px;
+}
+.browser-toolbar:not(.titlebar-color) {
+  background: #fff !important;
+}
+toolbarbutton.bookmark-item:not(.subviewbutton) {
+  padding: 6px !important;
+}
+#PersonalToolbar {
+  padding-bottom: 2px;
+}
+#PersonalToolbar .toolbarbutton-1:not(:hover:active, :active),
+#tabbrowser-arrowscrollbox::part(scrollbutton-up):not(:hover:active, :active),
+#tabbrowser-arrowscrollbox::part(scrollbutton-down):not(:hover:active, :active),
+toolbarbutton.bookmark-item:not(:hover:active, :active) {
+  transition: background-color 400ms cubic-bezier(0, 0.5, 0, 1);
+}
+toolbar .toolbarbutton-1:not([open], [checked], :hover:active) > .toolbarbutton-icon,
+toolbar .toolbarbutton-1:not([open], [checked], :hover:active) > .toolbarbutton-text,
+toolbar .toolbarbutton-1:not([open], [checked], :hover:active) > .toolbarbutton-badge-stack {
+  transition: background-color 400ms cubic-bezier(0, 0.5, 0, 1);
+}
+#nav-bar .toolbarbutton-1 > .toolbarbutton-icon,
+#nav-bar .toolbarbutton-1 > .toolbarbutton-text,
+#nav-bar .toolbarbutton-1 > .toolbarbutton-badge-stack {
+  z-index: 1;
+  position: relative;
+  border-radius: 0px!important;
+}
+#nav-bar .toolbarbutton-1:not([disabled="true"],  [checked], [open], :active):hover > .toolbarbutton-icon,
+#nav-bar .toolbarbutton-1:not([disabled="true"],  [checked], [open], :active):hover > .toolbarbutton-text,
+#nav-bar .toolbarbutton-1:not([disabled="true"],  [checked], [open], :active):hover > .toolbarbutton-badge-stack {
+  background-color: transparent!important;
+}
+#nav-bar .toolbarbutton-1:not([disabled="true"]):is([open], [checked], :hover:active) > .toolbarbutton-icon,
+#nav-bar .toolbarbutton-1:not([disabled="true"]):is([open], [checked], :hover:active) > .toolbarbutton-text,
+#nav-bar .toolbarbutton-1:not([disabled="true"]):is([open], [checked], :hover:active) > .toolbarbutton-badge-stack {
+  background-color: transparent!important;
+}
+#nav-bar .toolbarbutton-1 {
+  position: relative;
+}
+#nav-bar .toolbarbutton-1::before {
+  display: block;
+  content: "";
+  border-radius: var(--toolbarbutton-border-radius);
+  position: absolute;
+  width: calc(2 * var(--toolbarbutton-inner-padding) + 16px);
+  height: calc(2 * var(--toolbarbutton-inner-padding) + 16px);
+  top: calc(50% - 8px - var(--toolbarbutton-inner-padding));
+  transition: background-color 400ms cubic-bezier(0, 0.5, 0, 1);
+}
+#nav-bar .toolbarbutton-1:not([disabled="true"],  [checked], [open], :active):hover::before {
+  background-color: var(--toolbarbutton-hover-background);
+}
+#nav-bar .toolbarbutton-1:not([disabled="true"]):is([open], [checked], :hover:active)::before {
+  transition: 0ms;
+  background-color: var(--toolbarbutton-active-background);
+}

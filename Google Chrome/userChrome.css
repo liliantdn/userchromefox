@@ -48,6 +48,8 @@ body {
 .tabbrowser-tab {
   padding: 0px !important;
   overflow-clip-margin: 10px !important;
+  position: relative;
+  z-index: 0;
 }
 .tabbrowser-tab::before,
 .tabbrowser-tab::after {
@@ -68,12 +70,13 @@ body {
   right: -10px;
   -webkit-mask-image: radial-gradient(circle calc(10px / 2) at 10px 0, transparent 0, transparent 10px, black calc(10px + 1px));
 }
-.tabbrowser-tab:hover {
-  position: relative;
-}
 .tabbrowser-tab:hover::before,
 .tabbrowser-tab:hover::after {
   opacity: 1;
+}
+.tabbrowser-tab:active,
+.tabbrowser-tab[visuallyselected="true"] {
+  z-index: 1;
 }
 .tabbrowser-tab:active::before,
 .tabbrowser-tab[visuallyselected="true"]::before,
@@ -165,6 +168,11 @@ toolbar .toolbarbutton-1:not([open], [checked], :hover:active) > .toolbarbutton-
 #nav-bar .toolbarbutton-1:not([disabled="true"]):is([open], [checked], :hover:active) > .toolbarbutton-text,
 #nav-bar .toolbarbutton-1:not([disabled="true"]):is([open], [checked], :hover:active) > .toolbarbutton-badge-stack {
   background-color: transparent!important;
+}
+panelview .toolbarbutton-1:not([disabled]):hover,
+toolbarbutton.subviewbutton:not([disabled]):hover,
+.widget-overflow-list .toolbarbutton-1:not([disabled]):hover {
+  background: transparent!important;
 }
 #nav-bar .toolbarbutton-1 {
   position: relative;

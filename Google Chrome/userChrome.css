@@ -8,6 +8,7 @@ body {
   --toolbarbutton-border-radius: 20px;
   --urlbar-icon-border-radius: 20px;
   --toolbarbutton-hover-background: #EEEEEE;
+  font-family: inter, sans-serif;
 }
 #tabbrowser-tabs ~ #alltabs-button {
   display: none !important;
@@ -93,9 +94,7 @@ body {
   padding-left: 7px !important;
 }
 .tab-close-button {
-  transition: width 100ms ease, -webkit-padding-start 100ms ease;
   transition: width 100ms ease, padding-inline-start 100ms ease;
-  transition: width 100ms ease, padding-inline-start 100ms ease, -webkit-padding-start 100ms ease;
 }
 .tab-close-button:hover,
 .tab-close-button:active {

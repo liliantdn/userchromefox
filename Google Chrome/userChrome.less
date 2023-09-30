@@ -94,7 +94,7 @@ body {
   }
 
   &:active,
-  &[visuallyselected="true"] {
+  &[selected="true"] {
     z-index: 1;
     &::before,
     &::after {
@@ -143,7 +143,7 @@ body {
   padding-top: 3px;
 } */
 #TabsToolbar #firefox-view-button:hover:not([open])>.toolbarbutton-icon,
-.tabbrowser-tab:hover>.tab-stack>.tab-background:not([selected="true"], [multiselected]) {
+.tabbrowser-tab:hover>.tab-stack>.tab-background:not([selected], [multiselected]) {
   background-color: #EAECEF !important;
   opacity: 1;
 }

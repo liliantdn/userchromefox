@@ -76,13 +76,13 @@ body {
   opacity: 1;
 }
 .tabbrowser-tab:active,
-.tabbrowser-tab[visuallyselected="true"] {
+.tabbrowser-tab[selected="true"] {
   z-index: 1;
 }
 .tabbrowser-tab:active::before,
-.tabbrowser-tab[visuallyselected="true"]::before,
+.tabbrowser-tab[selected="true"]::before,
 .tabbrowser-tab:active::after,
-.tabbrowser-tab[visuallyselected="true"]::after {
+.tabbrowser-tab[selected="true"]::after {
   opacity: 1;
   background: #fff;
 }
@@ -94,7 +94,9 @@ body {
   padding-left: 7px !important;
 }
 .tab-close-button {
+  transition: width 100ms ease, -webkit-padding-start 100ms ease;
   transition: width 100ms ease, padding-inline-start 100ms ease;
+  transition: width 100ms ease, padding-inline-start 100ms ease, -webkit-padding-start 100ms ease;
 }
 .tab-close-button:hover,
 .tab-close-button:active {
@@ -113,7 +115,7 @@ body {
   padding-top: 3px;
 } */
 #TabsToolbar #firefox-view-button:hover:not([open]) > .toolbarbutton-icon,
-.tabbrowser-tab:hover > .tab-stack > .tab-background:not([selected="true"], [multiselected]) {
+.tabbrowser-tab:hover > .tab-stack > .tab-background:not([selected], [multiselected]) {
   background-color: #EAECEF !important;
   opacity: 1;
 }

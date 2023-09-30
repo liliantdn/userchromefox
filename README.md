@@ -3,12 +3,12 @@ A work-in-progress `userchrome.css` theme for firefox that attempts to strike a 
 
 ![preview](https://github.com/liliantdn/userchromefox/blob/main/preview.jpg)
 ## How to install
-
-1. Go to about:config, set `toolkit.legacyUserProfileCustomizations.stylesheets` to `true` (if it is unset, click the `+` button).
-2.  Go to `about:support`.
-3. Find *Profile Folder* and click the `Open Folder` button.
-4. Put the `chrome` folder into your Firefox profile directory.
-5. Restart Firefox to apply changes.
+1. Download from the [releases](https://github.com/liliantdn/userchromefox/releases) tab.
+2. Go to about:config, set `toolkit.legacyUserProfileCustomizations.stylesheets` to `true` (if it is unset, click the `+` button).
+3.  Go to `about:support`.
+4. Find *Profile Folder* and click the `Open Folder` button.
+5. Put the `chrome` folder into your Firefox profile directory.
+6. Restart Firefox to apply changes.
 
 ## Known issues:
 - No dark theme support -> will attempt to fix at some point, feel free to make a pull request if you wish to help ;)

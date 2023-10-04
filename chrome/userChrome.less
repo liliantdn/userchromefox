@@ -2,106 +2,107 @@
 @tab-border-radius : 10px;
 @easing1 : cubic-bezier(0, .5, 0, 1);
 body {
-  --tab-block-margin: 0px;
-  --tab-border-radius: 10px;
-  --inline-tab-padding: 12px;
-  --tab-block-margin: 0;
-  /*5px 0 for top padding*/
-  --tab-min-height: 34px;
-  --toolbarbutton-border-radius: 20px;
-  --urlbar-icon-border-radius: 20px;
-  --toolbarbutton-hover-background: #EEEEEE;
-  font-family: inter,sans-serif;
+	--tab-block-margin: 0px;
+	--tab-border-radius: 10px;
+	--inline-tab-padding: 12px;
+	--tab-block-margin: 0;
+	/*5px 0 for top padding*/
+	--tab-min-height: 34px;
+	--toolbarbutton-border-radius: 20px;
+	--urlbar-icon-border-radius: 20px;
+	--toolbarbutton-hover-background: light-dark(#EEEEEE, rgba(255,255,255,.1));
+	font-family: inter,sans-serif;
 }
 
 #tabbrowser-tabs~#alltabs-button {
-  display: none !important;
+	display: none !important;
 }
 
 #TabsToolbar {
-  background: #DEE1E6 !important;
+	background: light-dark(#DEE1E6, #1C1B22) !important;
 }
 
 .titlebar-spacer[type="pre-tabs"] {
-  display: none;
+	display: none;
 }
 
 .toolbarbutton-icon,
 .toolbarbutton-text,
 .toolbarbutton-badge-stack {
-  #TabsToolbar .toolbarbutton-1>& {
-    height: calc(2 * 5px + 16px) !important;
-    width: calc(2 * 5px + 16px) !important;
-    padding: 5px !important;
-    border-radius: 50% !important;
-    transition: all 200ms @easing1, background-color 400ms @easing1;
-  }
+	#TabsToolbar .toolbarbutton-1>& {
+		height: calc(2 * 5px + 16px) !important;
+		width: calc(2 * 5px + 16px) !important;
+		padding: 5px !important;
+		border-radius: 50% !important;
+		transition: all 200ms @easing1, background-color 400ms @easing1;
+	}
 
-  // hover
-  #TabsToolbar .toolbarbutton-1:not([disabled="true"], [checked], [open], :active):hover>& {
-    background-color: rgba(0, 0, 0, .1) !important;
-  }
+	// hover
+	#TabsToolbar .toolbarbutton-1:not([disabled="true"], [checked], [open], :active):hover>& {
+		background-color: rgba(0, 0, 0, .1) !important;
+	}
 
-  // active
-  #TabsToolbar .toolbarbutton-1:not([disabled="true"]):is([open], [checked], :hover:active)>& {
-    background-color: rgba(0, 0, 0, .2) !important;
-    transition: all 0ms !important;
-  }
+	// active
+	#TabsToolbar .toolbarbutton-1:not([disabled="true"]):is([open], [checked], :hover:active)>& {
+		background-color: rgba(0, 0, 0, .2) !important;
+		transition: all 0ms !important;
+	}
 }
 
 #tabs-newtab-button {
-  margin-left: 5px !important;
+	margin-left: 5px !important;
 }
 
 #tabbrowser-arrowscrollbox {
-  padding-left: 8px;
-  --tab-min-width: 64px;
+	padding-left: 8px;
+	--tab-min-width: 64px;
 }
 
 .tabbrowser-tab {
-  padding: 0px !important;
-  overflow-clip-margin: @tab-border-radius !important;
-  position: relative;
-  z-index: 0;
+	padding: 0px !important;
+	overflow-clip-margin: @tab-border-radius !important;
+	position: relative;
+	z-index: 0;
 
-  &::before,
-  &::after {
-    content: "";
-    width: @tab-border-radius;
-    height: @tab-border-radius;
-    position: absolute;
-    bottom: 0;
-    opacity: 0;
-    background: #EAECEF;
-    transition: opacity 400ms @easing1;
-  }
+	&::before,
+	&::after {
+		content: "";
+		width: @tab-border-radius;
+		height: @tab-border-radius;
+		position: absolute;
+		bottom: 0;
+		opacity: 0;
+		background: light-dark(#EAECEF,#2B2A33);
+		transition: opacity 400ms @easing1;
+	}
 
-  &::before {
-    left: -@tab-border-radius;
-    -webkit-mask-image: radial-gradient(circle calc(@tab-border-radius / 2) at 0 0, transparent 0, transparent @tab-border-radius, black calc(@tab-border-radius + 1px));
-  }
+	&::before {
+		left: -@tab-border-radius;
+		-webkit-mask-image: radial-gradient(circle calc(@tab-border-radius / 2) at 0 0, transparent 0, transparent @tab-border-radius, black calc(@tab-border-radius + 1px));
+	}
 
-  &::after {
-    right: -@tab-border-radius;
-    -webkit-mask-image: radial-gradient(circle calc(@tab-border-radius / 2) at @tab-border-radius 0, transparent 0, transparent @tab-border-radius, black calc(@tab-border-radius + 1px));
-  }
+	&::after {
+		right: -@tab-border-radius;
+		-webkit-mask-image: radial-gradient(circle calc(@tab-border-radius / 2) at @tab-border-radius 0, transparent 0, transparent @tab-border-radius, black calc(@tab-border-radius + 1px));
+	}
 
-  &:hover {
-    &::before,
-    &::after {
-      opacity: 1;
-    }
-  }
+	&:hover {
+		&::before,
+		&::after {
+			opacity: 1;
+			transition: opacity 400ms @easing1;
+		}
+	}
 
-  &:active,
-  &[selected="true"] {
-    z-index: 1;
-    &::before,
-    &::after {
-      opacity: 1;
-      background: #fff;
-    }
-  }
+	&:active,
+	&[selected="true"] {
+		z-index: 1;
+		&::before,
+		&::after {
+			opacity: 1;
+			background: light-dark(#fff,#42414D);
+		}
+	}
 
 
 }
@@ -112,129 +113,135 @@ body {
 // }
 
 #tabbrowser-tabs:not([movingtab]) .tabbrowser-tab:not([pinned]) {
-  transition: min-width 250ms cubic-bezier(.2, 0, 0, 1), max-width 250ms cubic-bezier(.2, 0, 0, 1) !important;
+	transition: min-width 250ms cubic-bezier(.2, 0, 0, 1), max-width 250ms cubic-bezier(.2, 0, 0, 1) !important;
 }
 
 .tabbrowser-tab:not([labelendaligned], :hover)>.tab-stack>.tab-content>.tab-close-button {
-  width: 24px !important;
-  padding-left: 7px !important;
+	width: 24px !important;
+	padding-left: 7px !important;
 }
 
 .tab-close-button {
-  transition: width 100ms ease, padding-inline-start 100ms ease;
+	transition: width 100ms ease, padding-inline-start 100ms ease;
 
-  &:hover,
-  &:active {
-    border-radius: 50% !important;
-    transition: all 0ms !important;
-  }
+	&:hover,
+	&:active {
+		border-radius: 50% !important;
+		transition: all 0ms !important;
+	}
 }
 
 .tab-background {
-  height: 100% !important;
-  border-radius: @tab-border-radius @tab-border-radius 0 0 !important;
-  box-shadow: -1px 0 0 rgba(0, 0, 0, .01) inset;
-  background-color: #EAECEF !important;
-  opacity: 0;
-  transition: opacity 400ms @easing1;
+	height: 100% !important;
+	border-radius: @tab-border-radius @tab-border-radius 0 0 !important;
+	box-shadow: -1px 0 0 rgba(0, 0, 0, .01) inset;
+	background-color: light-dark(#EAECEF,#42414D) !important;
+	opacity: 0;
+	transition: opacity 400ms @easing1;
 }
 
 /* .tab-content{
-  padding-top: 3px;
+	padding-top: 3px;
 } */
 #TabsToolbar #firefox-view-button:hover:not([open])>.toolbarbutton-icon,
 .tabbrowser-tab:hover>.tab-stack>.tab-background:not([selected], [multiselected]) {
-  background-color: #EAECEF !important;
-  opacity: 1;
+	background-color: light-dark(#EAECEF,#2B2A33) !important;
+	opacity: 1;
 }
 
 #TabsToolbar #firefox-view-button[open]>.toolbarbutton-icon,
 #tabbrowser-tabs:not([noshadowfortests]) .tab-background:is([selected], [multiselected]) {
-  box-shadow: none !important;
+	box-shadow: none !important;
 }
 
 #TabsToolbar #firefox-view-button[open]>.toolbarbutton-icon,
 .tab-background:is([selected],
-  [multiselected]) {
-  background: #fff !important;
-  opacity: 1;
-  transition: 0ms;
+	[multiselected]) {
+	background: light-dark(#fff,#42414D) !important;
+	opacity: 1;
+	transition: 0ms;
 }
 
 
 
 .tab-content {
-  padding: 2px
+	padding: 2px
 }
 
 .browser-toolbar:not(.titlebar-color) {
-  background: #fff !important;
+	background: light-dark(#fff,#42414D) !important;
 }
 
 // #personal-toolbar-empty-description,
 // #PersonalToolbar .toolbarbutton-1,
 toolbarbutton.bookmark-item:not(.subviewbutton) {
-  padding: 6px !important;
+	padding: 6px !important;
 }
 
 #PersonalToolbar {
-  padding-bottom: 2px;
+	padding-bottom: 2px;
 }
 
 #PersonalToolbar .toolbarbutton-1,
 #tabbrowser-arrowscrollbox::part(scrollbutton-up),
 #tabbrowser-arrowscrollbox::part(scrollbutton-down),
 toolbarbutton.bookmark-item {
-  &:not(:hover:active, :active) {
-    transition: background-color 400ms @easing1;
-  }
+	&:not(:hover:active, :active) {
+		transition: background-color 400ms @easing1;
+	}
 }
 .toolbarbutton-icon,
 .toolbarbutton-text,
 .toolbarbutton-badge-stack {
-  toolbar .toolbarbutton-1:not([open], [checked], :hover:active)>& {
-    transition: background-color 400ms @easing1;
-  }
-  #nav-bar .toolbarbutton-1 > &{
-    z-index: 1;
-    position: relative;
-    border-radius: 0px!important;
-  }
-  #nav-bar .toolbarbutton-1:not([disabled="true"],  [checked], [open], :active):hover > &{
-    background-color: transparent!important;
-  }
-  #nav-bar .toolbarbutton-1:not([disabled="true"]):is([open], [checked], :hover:active) > &{
-    background-color: transparent!important;
-  }
+	toolbar .toolbarbutton-1:not([open], [checked], :hover:active)>& {
+		transition: background-color 400ms @easing1;
+	}
+	#nav-bar .toolbarbutton-1 > &{
+		z-index: 1;
+		position: relative;
+		border-radius: 0px!important;
+	}
+	#nav-bar .toolbarbutton-1:not([disabled="true"],  [checked], [open], :active):hover > &{
+		background-color: transparent!important;
+	}
+	#nav-bar .toolbarbutton-1:not([disabled="true"]):is([open], [checked], :hover:active) > &{
+		background-color: transparent!important;
+	}
 }
 //extension bg fix
 panelview .toolbarbutton-1,
 toolbarbutton.subviewbutton,
 .widget-overflow-list .toolbarbutton-1{
-  &:not([disabled]):hover{
-    background:transparent!important;
-  }
+	&:not([disabled]):hover{
+		background:transparent!important;
+	}
 }
 
 #nav-bar .toolbarbutton-1{
-  position: relative;
+	position: relative;
 
-  &::before{
-    display: block;
-    content:"";
-    border-radius: var(--toolbarbutton-border-radius);
-    position: absolute;
-    width: calc(2 * var(--toolbarbutton-inner-padding) + 16px);
-    height: calc(2 * var(--toolbarbutton-inner-padding) + 16px);
-    top: calc(50% - 8px - var(--toolbarbutton-inner-padding));
-    transition: background-color 400ms @easing1;
-  }
-  &:not([disabled="true"],  [checked], [open], :active):hover::before{
-    background-color: var(--toolbarbutton-hover-background);
-  }
-  &:not([disabled="true"]):is([open], [checked], :hover:active)::before{
-    transition:0ms;
-    background-color: var(--toolbarbutton-active-background);
-  }
-  
+	&::before{
+		display: block;
+		content:"";
+		border-radius: var(--toolbarbutton-border-radius);
+		position: absolute;
+		width: calc(2 * var(--toolbarbutton-inner-padding) + 16px);
+		height: calc(2 * var(--toolbarbutton-inner-padding) + 16px);
+		top: calc(50% - 8px - var(--toolbarbutton-inner-padding));
+		transition: background-color 400ms @easing1;
+	}
+	&:not([disabled="true"],  [checked], [open], :active):hover::before{
+		background-color: var(--toolbarbutton-hover-background);
+	}
+	&:not([disabled="true"]):is([open], [checked], :hover:active)::before{
+		transition:0ms;
+		background-color: var(--toolbarbutton-active-background);
+	}
+	
+}
+html[lwt-toolbar-field-focus-brighttext="true"]{ //
+	
+}
+.PanelUI-subView toolbarseparator.proton-zap{
+	border-image:none!important;
 }

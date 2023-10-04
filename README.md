@@ -9,6 +9,3 @@ A work-in-progress `userchrome.css` theme for firefox that attempts to strike a 
 4. Find *Profile Folder* and click the `Open Folder` button.
 5. Put the `chrome` folder into your Firefox profile directory.
 6. Restart Firefox to apply changes.
-
-## Known issues:
-- No dark theme support -> will attempt to fix at some point, feel free to make a pull request if you wish to help ;)

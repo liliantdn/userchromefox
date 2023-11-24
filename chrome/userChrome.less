@@ -1,58 +1,130 @@
 // @import "icons";
 @import "fonts";
 
+
 // Options //
 
-@tab-border-radius: 10px;
+// colors
+@accent-color: #1E64D4;
+@browser-background: #DEE1E6;
+@browser-background-dark: #1C1B22;
+
 @top-margin-when-windowed: true;
+@top-margin-size-when-windowed: 10px;
+
 @hide-all-tabs-button: false;
 
-// Utilities //
-@snap-easing : cubic-bezier(0, .5, 0, 1);
+@button-hover-length: 400ms; //set to 0ms for no hover animation, 400ms for default
 
-//for managing light and dark theme
-.light-dark(@option,@light,@dark){
-	&{
-		@{option}:@light;
+// tabs
+@tab-border-radius: 10px;
+@tab-font-weight:400;
+
+// tab separators
+@tab-separator-enable: true;
+@tab-separator-margin: 8px;
+@tab-separator-width: 2px; // set to 0 to disable separators
+@tab-separator-color: rgba(0, 0, 0, .1);
+
+
+// Utilities //
+
+@snap-easing : cubic-bezier(0, .5, 0, 1);
+@snap-easing2 : cubic-bezier(0, .8, 0, 1);
+@snap-easing3 : cubic-bezier(0, 1, 0, 1);
+
+// for managing light and dark theme
+.light-dark(@option, @light, @dark) {
+	& {
+		@{option}: @light;
 	}
-	html[lwtheme-brighttext="true"] &{
-		@{option}:@dark;
+
+	html[lwtheme-brighttext="true"] & {
+		@{option}: @dark;
 	}
 }
-//for setting options in windowed mode (as opposed to maximized)
-.windowed(@option,@windowed,@fallback){
-	&{
-		@{option}:@fallback;
+
+// for setting options in windowed mode (as opposed to maximized)
+.windowed(@option, @windowed, @fallback) {
+	& {
+		@{option}: @fallback;
 	}
-	html[sizemode="normal"] &{
-		@{option}:@windowed;
+
+	html[sizemode="normal"] & {
+		@{option}: @windowed;
 	}
 }
 
 body {
-	font-family: "Inter",sans-serif;
+	// defining variables on body to avoid putting !important everywhere
+	font-family: "Inter", sans-serif;
 	--tab-block-margin: 0px;
-	--tab-border-radius: 10px;
+	--tab-border-radius: @tab-border-radius;
 	--inline-tab-padding: 12px;
 	--tab-min-height: 34px;
-	.windowed(--tab-top-margin,if(@top-margin-when-windowed,10px,0px),0px);
+	.windowed(--tab-top-margin, if(@top-margin-when-windowed, @top-margin-size-when-windowed, 0px), 0px);
 	--tab-block-margin: var(--tab-top-margin) 0;
+
+	/* toolbar buttons (+ extensions, favorites) */
 	--toolbarbutton-border-radius: 20px;
+	.light-dark(--toolbarbutton-hover-background, #EEEEEE, rgba(255, 255, 255, .1));
+
+	/* tabs */
+	--tab-font-weight:@tab-font-weight;
+	.light-dark(--browser-background, @browser-background, @browser-background-dark);
+	.light-dark(--tab-hovered-color, #EAECEF, #42414D);
+	.light-dark(--tab-selected-color, #fff, #42414D);
+	--tab-multiselected-color: color-mix(in oklab, var(--focus-outline-color) 20%, var(--tab-hovered-color));
+	--tab-multiselected-hovered-color: color-mix(in oklab, var(--focus-outline-color) 10%, var(--tab-hovered-color));
+
+	/* tab separator */
+	--tab-separator-margin: @tab-separator-margin;
+	--tab-separator-width: @tab-separator-width;
+	/*set to 0 to disable separators*/
+	--tab-separator-color: @tab-separator-color;
+
+	/* url/search bar */
 	--urlbar-icon-border-radius: 20px;
-	.light-dark(--toolbarbutton-hover-background,#EEEEEE,rgba(255,255,255,.1));
+	--urlbar-container-padding: 5px;
+
+	/* accent colors */
+	--system-color-accent: @accent-color;
+	--system-color-accent-hover: color-mix(in oklab, #fff 10%, var(--system-color-accent));
+	--system-color-accent-active: color-mix(in oklab, #000 20%, var(--system-color-accent));
+
+	--color-accent-primary: var(--system-color-accent);
+	--color-accent-primary-hover: var(--system-color-accent-hover);
+	--color-accent-primary-active: var(--system-color-accent-active);
+
+	--button-primary-bgcolor: var(--color-accent-primary);
+	--button-primary-hover-bgcolor: var(--color-accent-primary-hover);
+	--button-primary-active-bgcolor: var(--color-accent-primary-active);
+
+	--toolbar-field-focus-border-color: var(--focus-outline-color);
+	--focus-outline: var(--focus-outline-width) solid var(--focus-outline-color);
+	--focus-outline-color: var(--color-accent-primary);
+
+	/* focus outline */
+	--focus-outline-width: 2px;
+	--focus-outline-inset: calc(-1 * var(--focus-outline-width));
+	--focus-outline-offset: 2px;
 }
 
 #tabbrowser-tabs~#alltabs-button {
-	display:if(@hide-all-tabs-button,none,flex);
+	display: if(@hide-all-tabs-button, none, flex);
 }
 
 #TabsToolbar {
-	.light-dark(background,~"#DEE1E6!important", ~"#1C1B22!important");
+	background: var(--browser-background);
 }
 
 .titlebar-spacer[type="post-tabs"],
 .titlebar-spacer[type="pre-tabs"] {
 	display: none;
+}
+
+#tabbrowser-tabs {
+	margin-right: 40px;
 }
 
 .toolbarbutton-icon,
@@ -63,7 +135,7 @@ body {
 		width: calc(2 * 5px + 16px) !important;
 		padding: 5px !important;
 		border-radius: 50% !important;
-		transition: all 200ms @snap-easing, background-color 400ms @snap-easing;
+		transition: all 200ms @snap-easing, background-color @button-hover-length @snap-easing;
 	}
 
 	// hover
@@ -85,49 +157,53 @@ body {
 #tabbrowser-arrowscrollbox {
 	//padding-left: 8px;
 	--tab-min-width: 64px;
-	&[overflowing="true"]{
+
+	&[overflowing="true"] {
 		padding-left: 8px;
 	}
 }
 
 .tabbrowser-tab {
 	padding: 0px !important;
-	overflow-clip-margin: @tab-border-radius !important;
+	overflow-clip-margin: var(--tab-border-radius) !important;
 	position: relative;
 	z-index: 0;
 
-	#tabbrowser-arrowscrollbox:not([overflowing="true"]) &:first-child{
-		margin-left:8px!important;
-	}
-	#tabbrowser-arrowscrollbox[overflowing="true"] &[pinned="true"]{
-		transform:translate(8px, 0);
+	#tabbrowser-arrowscrollbox:not([overflowing="true"]) &:first-child {
+		margin-left: 8px !important;
 	}
 
+	#tabbrowser-arrowscrollbox[overflowing="true"] &[pinned="true"] {
+		transform: translate(8px, 0);
+	}
 
 	&::before,
 	&::after {
 		content: "";
-		width: @tab-border-radius + 1;
-		height: @tab-border-radius;
+		width: calc(var(--tab-border-radius) + 1px);
+		height: var(--tab-border-radius);
 		position: absolute;
 		bottom: 0;
 		opacity: 0;
-		.light-dark(background,#EAECEF,#2B2A33);
+		background: var(--tab-hovered-color);
 		transition: opacity 400ms @snap-easing;
+	}
+	.tab-label-container{
+		font-weight:var(--tab-font-weight);
 	}
 
 	&::before {
-		left: -@tab-border-radius;
-		-webkit-mask-image: radial-gradient(circle calc(@tab-border-radius / 2) at 0 0, transparent 0, transparent @tab-border-radius, black calc(@tab-border-radius + 1px));
+		left: calc(0px - var(--tab-border-radius));
+		-webkit-mask-image: radial-gradient(circle calc(var(--tab-border-radius) / 2) at 0 0, transparent 0, transparent var(--tab-border-radius), black calc(var(--tab-border-radius) + 1px));
 	}
 
 	&::after {
-		right: -@tab-border-radius;
-		-webkit-mask-image: radial-gradient(circle calc(@tab-border-radius / 2) at @tab-border-radius + 1 0, transparent 0, transparent @tab-border-radius, black calc(@tab-border-radius + 1px));
+		right: calc(0px - var(--tab-border-radius));
+		-webkit-mask-image: radial-gradient(circle calc(var(--tab-border-radius) / 2) at calc(var(--tab-border-radius) + 1px) 0, transparent 0, transparent var(--tab-border-radius), black calc(var(--tab-border-radius) + 1px));
 	}
 
 	&:hover {
-		.light-dark(background,#EAECEF,#2B2A33);
+		background: var(--tab-hovered-color);
 
 		&::before,
 		&::after {
@@ -139,18 +215,37 @@ body {
 	&:active,
 	&[selected="true"] {
 		z-index: 1;
-		.light-dark(background,#fff,#42414D);
+		background: var(--tab-selected-color);
 
 		&::before,
 		&::after {
 			opacity: 1;
-			.light-dark(background,#fff,#42414D);
+			background: var(--tab-selected-color);
 		}
 	}
 
+	&[multiselected="true"] {
+		.tab-label-container {
+			color: color-mix(in oklab, #000 10%, var(--focus-outline-color));
+		}
 
+		&::before,
+		&::after {
+			opacity: 1;
+			background: var(--tab-multiselected-color);
+			transition: background-color 400ms @snap-easing;
+		}
+
+		&:hover {
+			z-index: 2;
+
+			&::before,
+			&::after {
+				background-color: var(--tab-multiselected-hovered-color);
+			}
+		}
+	}
 }
-
 
 // .tabbrowser-tab[visuallyselected="true"]{
 //   --tab-min-width: 64px;
@@ -168,6 +263,7 @@ body {
 .tab-close-button {
 	transition: width 100ms ease, padding-inline-start 100ms ease;
 	border-radius: 50% !important;
+
 	&:hover,
 	&:active {
 		transition: all 0ms !important;
@@ -176,16 +272,16 @@ body {
 
 .tab-background {
 	height: 100% !important;
-	border-radius: @tab-border-radius @tab-border-radius 0 0 !important;
+	border-radius: var(--tab-border-radius) var(--tab-border-radius) 0 0 !important;
 	box-shadow: -1px 0 0 rgba(0, 0, 0, .01) inset;
-	.light-dark(background-color,~"#EAECEF!important",~"#42414D!important");
+	background-color: var(--tab-hovered-color) !important;
 	opacity: 0;
 	transition: opacity 400ms @snap-easing;
 }
 
 #TabsToolbar #firefox-view-button:hover:not([open])>.toolbarbutton-icon,
 .tabbrowser-tab:hover>.tab-stack>.tab-background:not([selected], [multiselected]) {
-	.light-dark(background-color,~"#EAECEF!important",~"#2B2A33!important") ;
+	background-color: var(--tab-hovered-color) !important;
 	opacity: 1;
 }
 
@@ -195,21 +291,54 @@ body {
 }
 
 #TabsToolbar #firefox-view-button[open]>.toolbarbutton-icon,
-.tab-background:is([selected],
-	[multiselected]) {
-	.light-dark(background,~"#fff!important",~"#42414D!important");
+.tab-background:is([selected]),
+.tabbrowser-tab:active>.tab-stack>.tab-background {
+	background: var(--tab-selected-color) !important;
 	opacity: 1;
 	transition: 0ms;
+}
+
+.tab-background[multiselected="true"] {
+	outline: none !important;
+	background: var(--tab-multiselected-color) !important;
+	transition: background-color 400ms @snap-easing;
+
+	.tabbrowser-tab:hover & {
+		background-color: var(--tab-multiselected-hovered-color) !important;
+	}
+
+	opacity:1;
 }
 
 
 
 .tab-content {
-	padding-top: var(--tab-top-margin)!important;
+	padding-top: var(--tab-top-margin) !important;
+
+	//separator inbetween tabs
+	&::after {
+		content: if(@tab-separator-enable, "", none);
+		width: var(--tab-separator-width);
+		height: calc(var(--tab-min-height) - calc(var(--tab-separator-margin) * 2));
+		position: absolute;
+		left: calc(0px - (var(--tab-separator-width) / 2));
+		bottom: var(--tab-separator-margin);
+		background: var(--tab-separator-color);
+		transition:opacity 400ms @snap-easing;
+	}
+	.tabbrowser-tab:hover &::after,
+	.tabbrowser-tab:hover + .tabbrowser-tab &::after,
+	.tabbrowser-tab[selected]:not([multiselected]) &::after,
+	.tabbrowser-tab[selected]:not([multiselected]) + .tabbrowser-tab &::after{
+		opacity:0;
+	};
+	#tabbrowser-arrowscrollbox:not([overflowing="true"]) .tabbrowser-tab:first-child &::after{
+		display:none;
+	}
 }
 
 .browser-toolbar:not(.titlebar-color) {
-	.light-dark(background,~"#fff!important",~"#42414D!important");
+	background: var(--tab-selected-color) !important;
 }
 
 // #personal-toolbar-empty-description,
@@ -226,91 +355,139 @@ toolbarbutton.bookmark-item:not(.subviewbutton) {
 #tabbrowser-arrowscrollbox::part(scrollbutton-up),
 #tabbrowser-arrowscrollbox::part(scrollbutton-down),
 toolbarbutton.bookmark-item {
-	&:not(:hover:active, :active) {
-		transition: background-color 400ms @snap-easing;
+	&:not(:hover: active, :active) {
+		transition: background-color @button-hover-length @snap-easing;
 	}
 }
+
 .toolbarbutton-icon,
 .toolbarbutton-text,
 .toolbarbutton-badge-stack {
-	toolbar .toolbarbutton-1:not([open], [checked], :hover:active)>& {
-		transition: background-color 400ms @snap-easing;
+	toolbar .toolbarbutton-1:not([open], [checked], : hover:active)>& {
+		transition: background-color @button-hover-length @snap-easing;
 	}
-	#nav-bar .toolbarbutton-1 > &{
+
+	#nav-bar .toolbarbutton-1>& {
 		z-index: 1;
 		position: relative;
-		border-radius: 0px!important;
+		border-radius: 0px !important;
 	}
-	#nav-bar .toolbarbutton-1:not([disabled="true"],  [checked], [open], :active):hover > &{
-		background-color: transparent!important;
+
+	#nav-bar .toolbarbutton-1:not([disabled="true"], [checked], [open], :active):hover>& {
+		background-color: transparent !important;
 	}
-	#nav-bar .toolbarbutton-1:not([disabled="true"]):is([open], [checked], :hover:active) > &{
-		background-color: transparent!important;
+
+	#nav-bar .toolbarbutton-1:not([disabled="true"]):is([open], [checked], :hover:active)>& {
+		background-color: transparent !important;
 	}
 }
+
 //extension bg fix
 panelview .toolbarbutton-1,
 // toolbarbutton.subviewbutton,
-.widget-overflow-list .toolbarbutton-1{
-	&:not([disabled]):hover{
-		background:transparent!important;
+.widget-overflow-list .toolbarbutton-1 {
+	&:not([disabled]):hover {
+		background: transparent !important;
 	}
 }
 
-#nav-bar .toolbarbutton-1{
+#nav-bar .toolbarbutton-1 {
 	position: relative;
 
-	&::before{
+	&::before {
 		display: block;
-		content:"";
+		content: "";
 		border-radius: var(--toolbarbutton-border-radius);
 		position: absolute;
 		width: calc(2 * var(--toolbarbutton-inner-padding) + 16px);
 		height: calc(2 * var(--toolbarbutton-inner-padding) + 16px);
 		top: calc(50% - 8px - var(--toolbarbutton-inner-padding));
-		transition: background-color 400ms @snap-easing;
+		transition: background-color @button-hover-length @snap-easing;
 	}
-	&:not([disabled="true"],  [checked], [open], :active):hover::before{
+
+	&:not([disabled="true"], [checked], [open], :active):hover::before {
 		background-color: var(--toolbarbutton-hover-background);
 	}
-	&:not([disabled="true"]):is([open], [checked], :hover:active)::before{
-		transition:0ms;
+
+	&:not([disabled="true"]):is([open], [checked], :hover:active)::before {
+		transition: 0ms;
 		background-color: var(--toolbarbutton-active-background);
 	}
-	
-}
-html[lwt-toolbar-field-focus-brighttext="true"]{ //
-	
-}
-.PanelUI-subView toolbarseparator.proton-zap{
-	border-image:none!important;
+
 }
 
-#sidebar-search-container{
-	padding: 8px 15px!important;
+.PanelUI-subView toolbarseparator.proton-zap {
+	border-image: none !important;
 }
 
-#search-box{
-	appearance: none!important;
-  background-color: rgba(0,0,0,.05)!important;
-  border-radius:30px!important;
-  padding:8px 13px!important;
-  transition: background-color 400ms @snap-easing;
-  &:hover {
-  	background-color: rgba(0,0,0,.1)!important;
-  }
-  &[focused="true"] {
-  	transition: 0ms;
-  	background-color: #fff!important;
-  	box-shadow: 0 0 0 2px #0078D7,0 3px 6px 2px rgba(0, 120, 215, .05);
-  }
+#sidebar-search-container {
+	padding: 8px 15px !important;
 }
-#viewButton{
-	margin-inline-start: 5px!important;
-  border-radius: 30px!important;
-  padding: 5px 10px !important;
-  border:0px!important;
+
+#search-box {
+	appearance: none !important;
+	background-color: rgba(0, 0, 0, .05) !important;
+	border-radius: 30px !important;
+	padding: 8px 13px !important;
+	transition: background-color 400ms @snap-easing;
+
+	&:hover {
+		background-color: rgba(0, 0, 0, .1) !important;
+	}
+
+	&[focused="true"] {
+		transition: 0ms;
+		background-color: #fff !important;
+		box-shadow: 0 0 0 2px var(--focus-outline-color), 0 3px 6px 2px rgba(0, 120, 215, .05);
+	}
 }
-// .subviewbutton{
-// 	background:red!important;
-// }
+
+#viewButton {
+	margin-inline-start: 5px !important;
+	border-radius: 30px !important;
+	padding: 5px 10px !important;
+	border: 0px !important;
+}
+
+// Url bar //
+#urlbar[focused="true"]:not([suppress-focus-border])>#urlbar-background,
+#searchbar:focus-within {
+	//redefining it just in case
+	outline: var(--focus-outline);
+	outline-offset: var(--focus-outline-inset);
+	outline-color: var(--toolbar-field-focus-border-color);
+	border-color: transparent;
+}
+
+#urlbar[focused="true"]>#urlbar-background,
+#searchbar:focus-within {
+	box-shadow: 0 3px 6px rgba(0, 120, 215, .05) !important;
+}
+
+#urlbar[open]>#urlbar-background {
+	box-shadow: 0 5px 10px rgba(0, 0, 0, .1) !important;
+}
+
+#urlbar[breakout][breakout-extend]>#urlbar-background {
+	animation-timing-function: @snap-easing3 !important;
+	animation-duration: 400ms !important;
+}
+
+#urlbar[breakout][breakout-extend]>#urlbar-input-container {
+	height: var(--urlbar-toolbar-height);
+	padding-block: calc((var(--urlbar-toolbar-height) - var(--urlbar-height)) / 2 + var(--urlbar-container-padding));
+	padding-inline: calc(var(--urlbar-margin-inline) + var(--urlbar-container-padding));
+}
+
+// "this time search with..."
+#urlbar .search-one-offs:not([hidden]) {
+	@spacing: 6px;
+	// border-top:none!important;
+	background: rgba(0, 0, 0, .01);
+	padding: 3px 5px !important;
+	margin-top: 5px;
+	margin-bottom: calc(5px + var(--urlbar-container-padding));
+	box-sizing: border-box;
+	border-radius: calc(var(--urlbar-icon-border-radius) - @spacing);
+	border: 1px solid rgba(0, 0, 0, .03) !important;
+}

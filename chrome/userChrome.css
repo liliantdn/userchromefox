@@ -46,9 +46,41 @@ body {
   --tab-min-height: 34px;
   --tab-top-margin: 0px;
   --tab-block-margin: var(--tab-top-margin) 0;
+  /* toolbar buttons (+ extensions, favorites) */
   --toolbarbutton-border-radius: 20px;
-  --urlbar-icon-border-radius: 20px;
   --toolbarbutton-hover-background: #EEEEEE;
+  /* tabs */
+  --tab-font-weight: 400;
+  --browser-background: #DEE1E6;
+  --tab-hovered-color: #EAECEF;
+  --tab-selected-color: #fff;
+  --tab-multiselected-color: color-mix(in oklab, var(--focus-outline-color) 20%, var(--tab-hovered-color));
+  --tab-multiselected-hovered-color: color-mix(in oklab, var(--focus-outline-color) 10%, var(--tab-hovered-color));
+  /* tab separator */
+  --tab-separator-margin: 8px;
+  --tab-separator-width: 2px;
+  /*set to 0 to disable separators*/
+  --tab-separator-color: rgba(0, 0, 0, 0.1);
+  /* url/search bar */
+  --urlbar-icon-border-radius: 20px;
+  --urlbar-container-padding: 5px;
+  /* accent colors */
+  --system-color-accent: #1E64D4;
+  --system-color-accent-hover: color-mix(in oklab, #fff 10%, var(--system-color-accent));
+  --system-color-accent-active: color-mix(in oklab, #000 20%, var(--system-color-accent));
+  --color-accent-primary: var(--system-color-accent);
+  --color-accent-primary-hover: var(--system-color-accent-hover);
+  --color-accent-primary-active: var(--system-color-accent-active);
+  --button-primary-bgcolor: var(--color-accent-primary);
+  --button-primary-hover-bgcolor: var(--color-accent-primary-hover);
+  --button-primary-active-bgcolor: var(--color-accent-primary-active);
+  --toolbar-field-focus-border-color: var(--focus-outline-color);
+  --focus-outline: var(--focus-outline-width) solid var(--focus-outline-color);
+  --focus-outline-color: var(--color-accent-primary);
+  /* focus outline */
+  --focus-outline-width: 2px;
+  --focus-outline-inset: calc(-1 * var(--focus-outline-width));
+  --focus-outline-offset: 2px;
 }
 html[sizemode="normal"] body {
   --tab-top-margin: 10px;
@@ -56,18 +88,27 @@ html[sizemode="normal"] body {
 html[lwtheme-brighttext="true"] body {
   --toolbarbutton-hover-background: rgba(255, 255, 255, 0.1);
 }
+html[lwtheme-brighttext="true"] body {
+  --browser-background: #1C1B22;
+}
+html[lwtheme-brighttext="true"] body {
+  --tab-hovered-color: #42414D;
+}
+html[lwtheme-brighttext="true"] body {
+  --tab-selected-color: #42414D;
+}
 #tabbrowser-tabs ~ #alltabs-button {
   display: flex;
 }
 #TabsToolbar {
-  background: #DEE1E6!important;
-}
-html[lwtheme-brighttext="true"] #TabsToolbar {
-  background: #1C1B22!important;
+  background: var(--browser-background);
 }
 .titlebar-spacer[type="post-tabs"],
 .titlebar-spacer[type="pre-tabs"] {
   display: none;
+}
+#tabbrowser-tabs {
+  margin-right: 40px;
 }
 #TabsToolbar .toolbarbutton-1 > .toolbarbutton-icon,
 #TabsToolbar .toolbarbutton-1 > .toolbarbutton-text,
@@ -100,12 +141,12 @@ html[lwtheme-brighttext="true"] #TabsToolbar {
 }
 .tabbrowser-tab {
   padding: 0px !important;
-  overflow-clip-margin: 10px !important;
+  overflow-clip-margin: var(--tab-border-radius) !important;
   position: relative;
   z-index: 0;
 }
 #tabbrowser-arrowscrollbox:not([overflowing="true"]) .tabbrowser-tab:first-child {
-  margin-left: 8px!important;
+  margin-left: 8px !important;
 }
 #tabbrowser-arrowscrollbox[overflowing="true"] .tabbrowser-tab[pinned="true"] {
   -webkit-transform: translate(8px, 0);
@@ -114,31 +155,27 @@ html[lwtheme-brighttext="true"] #TabsToolbar {
 .tabbrowser-tab::before,
 .tabbrowser-tab::after {
   content: "";
-  width: 11px;
-  height: 10px;
+  width: calc(var(--tab-border-radius) + 1px);
+  height: var(--tab-border-radius);
   position: absolute;
   bottom: 0;
   opacity: 0;
-  background: #EAECEF;
+  background: var(--tab-hovered-color);
   transition: opacity 400ms cubic-bezier(0, 0.5, 0, 1);
 }
-html[lwtheme-brighttext="true"] .tabbrowser-tab::before,
-html[lwtheme-brighttext="true"] .tabbrowser-tab::after {
-  background: #2B2A33;
+.tabbrowser-tab .tab-label-container {
+  font-weight: var(--tab-font-weight);
 }
 .tabbrowser-tab::before {
-  left: -10px;
-  -webkit-mask-image: radial-gradient(circle calc(10px / 2) at 0 0, transparent 0, transparent 10px, black calc(10px + 1px));
+  left: calc(0px - var(--tab-border-radius));
+  -webkit-mask-image: radial-gradient(circle calc(var(--tab-border-radius) / 2) at 0 0, transparent 0, transparent var(--tab-border-radius), black calc(var(--tab-border-radius) + 1px));
 }
 .tabbrowser-tab::after {
-  right: -10px;
-  -webkit-mask-image: radial-gradient(circle calc(10px / 2) at 11px 0, transparent 0, transparent 10px, black calc(10px + 1px));
+  right: calc(0px - var(--tab-border-radius));
+  -webkit-mask-image: radial-gradient(circle calc(var(--tab-border-radius) / 2) at calc(var(--tab-border-radius) + 1px) 0, transparent 0, transparent var(--tab-border-radius), black calc(var(--tab-border-radius) + 1px));
 }
 .tabbrowser-tab:hover {
-  background: #EAECEF;
-}
-html[lwtheme-brighttext="true"] .tabbrowser-tab:hover {
-  background: #2B2A33;
+  background: var(--tab-hovered-color);
 }
 .tabbrowser-tab:hover::before,
 .tabbrowser-tab:hover::after {
@@ -148,24 +185,30 @@ html[lwtheme-brighttext="true"] .tabbrowser-tab:hover {
 .tabbrowser-tab:active,
 .tabbrowser-tab[selected="true"] {
   z-index: 1;
-  background: #fff;
-}
-html[lwtheme-brighttext="true"] .tabbrowser-tab:active,
-html[lwtheme-brighttext="true"] .tabbrowser-tab[selected="true"] {
-  background: #42414D;
+  background: var(--tab-selected-color);
 }
 .tabbrowser-tab:active::before,
 .tabbrowser-tab[selected="true"]::before,
 .tabbrowser-tab:active::after,
 .tabbrowser-tab[selected="true"]::after {
   opacity: 1;
-  background: #fff;
+  background: var(--tab-selected-color);
 }
-html[lwtheme-brighttext="true"] .tabbrowser-tab:active::before,
-html[lwtheme-brighttext="true"] .tabbrowser-tab[selected="true"]::before,
-html[lwtheme-brighttext="true"] .tabbrowser-tab:active::after,
-html[lwtheme-brighttext="true"] .tabbrowser-tab[selected="true"]::after {
-  background: #42414D;
+.tabbrowser-tab[multiselected="true"] .tab-label-container {
+  color: color-mix(in oklab, #000 10%, var(--focus-outline-color));
+}
+.tabbrowser-tab[multiselected="true"]::before,
+.tabbrowser-tab[multiselected="true"]::after {
+  opacity: 1;
+  background: var(--tab-multiselected-color);
+  transition: background-color 400ms cubic-bezier(0, 0.5, 0, 1);
+}
+.tabbrowser-tab[multiselected="true"]:hover {
+  z-index: 2;
+}
+.tabbrowser-tab[multiselected="true"]:hover::before,
+.tabbrowser-tab[multiselected="true"]:hover::after {
+  background-color: var(--tab-multiselected-hovered-color);
 }
 #tabbrowser-tabs:not([movingtab]) .tabbrowser-tab:not([pinned]) {
   transition: min-width 250ms cubic-bezier(0.2, 0, 0, 1), max-width 250ms cubic-bezier(0.2, 0, 0, 1) !important;
@@ -186,48 +229,61 @@ html[lwtheme-brighttext="true"] .tabbrowser-tab[selected="true"]::after {
 }
 .tab-background {
   height: 100% !important;
-  border-radius: 10px 10px 0 0 !important;
+  border-radius: var(--tab-border-radius) var(--tab-border-radius) 0 0 !important;
   box-shadow: -1px 0 0 rgba(0, 0, 0, 0.01) inset;
-  background-color: #EAECEF!important;
+  background-color: var(--tab-hovered-color) !important;
   opacity: 0;
   transition: opacity 400ms cubic-bezier(0, 0.5, 0, 1);
 }
-html[lwtheme-brighttext="true"] .tab-background {
-  background-color: #42414D!important;
-}
 #TabsToolbar #firefox-view-button:hover:not([open]) > .toolbarbutton-icon,
 .tabbrowser-tab:hover > .tab-stack > .tab-background:not([selected], [multiselected]) {
-  background-color: #EAECEF!important;
+  background-color: var(--tab-hovered-color) !important;
   opacity: 1;
-}
-html[lwtheme-brighttext="true"] #TabsToolbar #firefox-view-button:hover:not([open]) > .toolbarbutton-icon,
-html[lwtheme-brighttext="true"] .tabbrowser-tab:hover > .tab-stack > .tab-background:not([selected], [multiselected]) {
-  background-color: #2B2A33!important;
 }
 #TabsToolbar #firefox-view-button[open] > .toolbarbutton-icon,
 #tabbrowser-tabs:not([noshadowfortests]) .tab-background:is([selected], [multiselected]) {
   box-shadow: none !important;
 }
 #TabsToolbar #firefox-view-button[open] > .toolbarbutton-icon,
-.tab-background:is([selected],
-	[multiselected]) {
-  background: #fff!important;
+.tab-background:is([selected]),
+.tabbrowser-tab:active > .tab-stack > .tab-background {
+  background: var(--tab-selected-color) !important;
   opacity: 1;
   transition: 0ms;
 }
-html[lwtheme-brighttext="true"] #TabsToolbar #firefox-view-button[open] > .toolbarbutton-icon,
-html[lwtheme-brighttext="true"] .tab-background:is([selected],
-	[multiselected]) {
-  background: #42414D!important;
+.tab-background[multiselected="true"] {
+  outline: none !important;
+  background: var(--tab-multiselected-color) !important;
+  transition: background-color 400ms cubic-bezier(0, 0.5, 0, 1);
+  opacity: 1;
+}
+.tabbrowser-tab:hover .tab-background[multiselected="true"] {
+  background-color: var(--tab-multiselected-hovered-color) !important;
 }
 .tab-content {
   padding-top: var(--tab-top-margin) !important;
 }
-.browser-toolbar:not(.titlebar-color) {
-  background: #fff!important;
+.tab-content::after {
+  content: "";
+  width: var(--tab-separator-width);
+  height: calc(var(--tab-min-height) - calc(var(--tab-separator-margin) * 2));
+  position: absolute;
+  left: calc(0px - (var(--tab-separator-width) / 2));
+  bottom: var(--tab-separator-margin);
+  background: var(--tab-separator-color);
+  transition: opacity 400ms cubic-bezier(0, 0.5, 0, 1);
 }
-html[lwtheme-brighttext="true"] .browser-toolbar:not(.titlebar-color) {
-  background: #42414D!important;
+.tabbrowser-tab:hover .tab-content::after,
+.tabbrowser-tab:hover + .tabbrowser-tab .tab-content::after,
+.tabbrowser-tab[selected]:not([multiselected]) .tab-content::after,
+.tabbrowser-tab[selected]:not([multiselected]) + .tabbrowser-tab .tab-content::after {
+  opacity: 0;
+}
+#tabbrowser-arrowscrollbox:not([overflowing="true"]) .tabbrowser-tab:first-child .tab-content::after {
+  display: none;
+}
+.browser-toolbar:not(.titlebar-color) {
+  background: var(--tab-selected-color) !important;
 }
 toolbarbutton.bookmark-item:not(.subviewbutton) {
   padding: 6px !important;
@@ -235,15 +291,15 @@ toolbarbutton.bookmark-item:not(.subviewbutton) {
 #PersonalToolbar {
   padding-bottom: 2px;
 }
-#PersonalToolbar .toolbarbutton-1:not(:hover:active, :active),
-#tabbrowser-arrowscrollbox::part(scrollbutton-up):not(:hover:active, :active),
-#tabbrowser-arrowscrollbox::part(scrollbutton-down):not(:hover:active, :active),
-toolbarbutton.bookmark-item:not(:hover:active, :active) {
+#PersonalToolbar .toolbarbutton-1:not(:hover: active, :active),
+#tabbrowser-arrowscrollbox::part(scrollbutton-up):not(:hover: active, :active),
+#tabbrowser-arrowscrollbox::part(scrollbutton-down):not(:hover: active, :active),
+toolbarbutton.bookmark-item:not(:hover: active, :active) {
   transition: background-color 400ms cubic-bezier(0, 0.5, 0, 1);
 }
-toolbar .toolbarbutton-1:not([open], [checked], :hover:active) > .toolbarbutton-icon,
-toolbar .toolbarbutton-1:not([open], [checked], :hover:active) > .toolbarbutton-text,
-toolbar .toolbarbutton-1:not([open], [checked], :hover:active) > .toolbarbutton-badge-stack {
+toolbar .toolbarbutton-1:not([open], [checked], : hover:active) > .toolbarbutton-icon,
+toolbar .toolbarbutton-1:not([open], [checked], : hover:active) > .toolbarbutton-text,
+toolbar .toolbarbutton-1:not([open], [checked], : hover:active) > .toolbarbutton-badge-stack {
   transition: background-color 400ms cubic-bezier(0, 0.5, 0, 1);
 }
 #nav-bar .toolbarbutton-1 > .toolbarbutton-icon,
@@ -251,21 +307,21 @@ toolbar .toolbarbutton-1:not([open], [checked], :hover:active) > .toolbarbutton-
 #nav-bar .toolbarbutton-1 > .toolbarbutton-badge-stack {
   z-index: 1;
   position: relative;
-  border-radius: 0px!important;
+  border-radius: 0px !important;
 }
-#nav-bar .toolbarbutton-1:not([disabled="true"],  [checked], [open], :active):hover > .toolbarbutton-icon,
-#nav-bar .toolbarbutton-1:not([disabled="true"],  [checked], [open], :active):hover > .toolbarbutton-text,
-#nav-bar .toolbarbutton-1:not([disabled="true"],  [checked], [open], :active):hover > .toolbarbutton-badge-stack {
-  background-color: transparent!important;
+#nav-bar .toolbarbutton-1:not([disabled="true"], [checked], [open], :active):hover > .toolbarbutton-icon,
+#nav-bar .toolbarbutton-1:not([disabled="true"], [checked], [open], :active):hover > .toolbarbutton-text,
+#nav-bar .toolbarbutton-1:not([disabled="true"], [checked], [open], :active):hover > .toolbarbutton-badge-stack {
+  background-color: transparent !important;
 }
 #nav-bar .toolbarbutton-1:not([disabled="true"]):is([open], [checked], :hover:active) > .toolbarbutton-icon,
 #nav-bar .toolbarbutton-1:not([disabled="true"]):is([open], [checked], :hover:active) > .toolbarbutton-text,
 #nav-bar .toolbarbutton-1:not([disabled="true"]):is([open], [checked], :hover:active) > .toolbarbutton-badge-stack {
-  background-color: transparent!important;
+  background-color: transparent !important;
 }
 panelview .toolbarbutton-1:not([disabled]):hover,
 .widget-overflow-list .toolbarbutton-1:not([disabled]):hover {
-  background: transparent!important;
+  background: transparent !important;
 }
 #nav-bar .toolbarbutton-1 {
   position: relative;
@@ -280,7 +336,7 @@ panelview .toolbarbutton-1:not([disabled]):hover,
   top: calc(50% - 8px - var(--toolbarbutton-inner-padding));
   transition: background-color 400ms cubic-bezier(0, 0.5, 0, 1);
 }
-#nav-bar .toolbarbutton-1:not([disabled="true"],  [checked], [open], :active):hover::before {
+#nav-bar .toolbarbutton-1:not([disabled="true"], [checked], [open], :active):hover::before {
   background-color: var(--toolbarbutton-hover-background);
 }
 #nav-bar .toolbarbutton-1:not([disabled="true"]):is([open], [checked], :hover:active)::before {
@@ -288,19 +344,19 @@ panelview .toolbarbutton-1:not([disabled]):hover,
   background-color: var(--toolbarbutton-active-background);
 }
 .PanelUI-subView toolbarseparator.proton-zap {
-  -o-border-image: none!important;
-     border-image: none!important;
+  -o-border-image: none !important;
+     border-image: none !important;
 }
 #sidebar-search-container {
-  padding: 8px 15px!important;
+  padding: 8px 15px !important;
 }
 #search-box {
-  -webkit-appearance: none!important;
-     -moz-appearance: none!important;
-          appearance: none!important;
+  -webkit-appearance: none !important;
+     -moz-appearance: none !important;
+          appearance: none !important;
   background-color: rgba(0, 0, 0, 0.05) !important;
-  border-radius: 30px!important;
-  padding: 8px 13px!important;
+  border-radius: 30px !important;
+  padding: 8px 13px !important;
   transition: background-color 400ms cubic-bezier(0, 0.5, 0, 1);
 }
 #search-box:hover {
@@ -309,12 +365,46 @@ panelview .toolbarbutton-1:not([disabled]):hover,
 #search-box[focused="true"] {
   transition: 0ms;
   background-color: #fff !important;
-  box-shadow: 0 0 0 2px #0078D7, 0 3px 6px 2px rgba(0, 120, 215, 0.05);
+  box-shadow: 0 0 0 2px var(--focus-outline-color), 0 3px 6px 2px rgba(0, 120, 215, 0.05);
 }
 #viewButton {
-  -webkit-margin-start: 5px!important;
-          margin-inline-start: 5px!important;
-  border-radius: 30px!important;
+  -webkit-margin-start: 5px !important;
+          margin-inline-start: 5px !important;
+  border-radius: 30px !important;
   padding: 5px 10px !important;
-  border: 0px!important;
+  border: 0px !important;
+}
+#urlbar[focused="true"]:not([suppress-focus-border]) > #urlbar-background,
+#searchbar:focus-within {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-inset);
+  outline-color: var(--toolbar-field-focus-border-color);
+  border-color: transparent;
+}
+#urlbar[focused="true"] > #urlbar-background,
+#searchbar:focus-within {
+  box-shadow: 0 3px 6px rgba(0, 120, 215, 0.05) !important;
+}
+#urlbar[open] > #urlbar-background {
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1) !important;
+}
+#urlbar[breakout][breakout-extend] > #urlbar-background {
+  -webkit-animation-timing-function: cubic-bezier(0, 1, 0, 1) !important;
+          animation-timing-function: cubic-bezier(0, 1, 0, 1) !important;
+  -webkit-animation-duration: 400ms !important;
+          animation-duration: 400ms !important;
+}
+#urlbar[breakout][breakout-extend] > #urlbar-input-container {
+  height: var(--urlbar-toolbar-height);
+  padding-block: calc((var(--urlbar-toolbar-height) - var(--urlbar-height)) / 2 + var(--urlbar-container-padding));
+  padding-inline: calc(var(--urlbar-margin-inline) + var(--urlbar-container-padding));
+}
+#urlbar .search-one-offs:not([hidden]) {
+  background: rgba(0, 0, 0, 0.01);
+  padding: 3px 5px !important;
+  margin-top: 5px;
+  margin-bottom: calc(5px + var(--urlbar-container-padding));
+  box-sizing: border-box;
+  border-radius: calc(var(--urlbar-icon-border-radius) - 6px);
+  border: 1px solid rgba(0, 0, 0, 0.03) !important;
 }

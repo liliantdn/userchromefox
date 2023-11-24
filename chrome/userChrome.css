@@ -1,21 +1,71 @@
+/* inter-regular - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  src: url('fonts/inter-v13-latin-regular.woff2') format('woff2');
+}
+/* inter-500 - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  src: url('fonts/inter-v13-latin-500.woff2') format('woff2');
+}
+/* inter-600 - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  src: url('fonts/inter-v13-latin-600.woff2') format('woff2');
+}
+/* inter-700 - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  src: url('fonts/inter-v13-latin-700.woff2') format('woff2');
+}
+/* inter-800 - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  src: url('fonts/inter-v13-latin-800.woff2') format('woff2');
+}
 body {
+  font-family: "Inter", sans-serif;
   --tab-block-margin: 0px;
   --tab-border-radius: 10px;
   --inline-tab-padding: 12px;
-  --tab-block-margin: 0;
-  /*5px 0 for top padding*/
   --tab-min-height: 34px;
+  --tab-top-margin: 0px;
+  --tab-block-margin: var(--tab-top-margin) 0;
   --toolbarbutton-border-radius: 20px;
   --urlbar-icon-border-radius: 20px;
-  --toolbarbutton-hover-background: light-dark(#EEEEEE, rgba(255, 255, 255, 0.1));
-  font-family: inter, sans-serif;
+  --toolbarbutton-hover-background: #EEEEEE;
+}
+html[sizemode="normal"] body {
+  --tab-top-margin: 10px;
+}
+html[lwtheme-brighttext="true"] body {
+  --toolbarbutton-hover-background: rgba(255, 255, 255, 0.1);
 }
 #tabbrowser-tabs ~ #alltabs-button {
-  display: none !important;
+  display: flex;
 }
 #TabsToolbar {
-  background: light-dark(#DEE1E6, #1C1B22) !important;
+  background: #DEE1E6!important;
 }
+html[lwtheme-brighttext="true"] #TabsToolbar {
+  background: #1C1B22!important;
+}
+.titlebar-spacer[type="post-tabs"],
 .titlebar-spacer[type="pre-tabs"] {
   display: none;
 }
@@ -43,8 +93,10 @@ body {
   margin-left: 5px !important;
 }
 #tabbrowser-arrowscrollbox {
-  padding-left: 8px;
   --tab-min-width: 64px;
+}
+#tabbrowser-arrowscrollbox[overflowing="true"] {
+  padding-left: 8px;
 }
 .tabbrowser-tab {
   padding: 0px !important;
@@ -52,16 +104,27 @@ body {
   position: relative;
   z-index: 0;
 }
+#tabbrowser-arrowscrollbox:not([overflowing="true"]) .tabbrowser-tab:first-child {
+  margin-left: 8px!important;
+}
+#tabbrowser-arrowscrollbox[overflowing="true"] .tabbrowser-tab[pinned="true"] {
+  -webkit-transform: translate(8px, 0);
+          transform: translate(8px, 0);
+}
 .tabbrowser-tab::before,
 .tabbrowser-tab::after {
   content: "";
-  width: 10px;
+  width: 11px;
   height: 10px;
   position: absolute;
   bottom: 0;
   opacity: 0;
-  background: light-dark(#EAECEF, #2B2A33);
+  background: #EAECEF;
   transition: opacity 400ms cubic-bezier(0, 0.5, 0, 1);
+}
+html[lwtheme-brighttext="true"] .tabbrowser-tab::before,
+html[lwtheme-brighttext="true"] .tabbrowser-tab::after {
+  background: #2B2A33;
 }
 .tabbrowser-tab::before {
   left: -10px;
@@ -69,7 +132,13 @@ body {
 }
 .tabbrowser-tab::after {
   right: -10px;
-  -webkit-mask-image: radial-gradient(circle calc(10px / 2) at 10px 0, transparent 0, transparent 10px, black calc(10px + 1px));
+  -webkit-mask-image: radial-gradient(circle calc(10px / 2) at 11px 0, transparent 0, transparent 10px, black calc(10px + 1px));
+}
+.tabbrowser-tab:hover {
+  background: #EAECEF;
+}
+html[lwtheme-brighttext="true"] .tabbrowser-tab:hover {
+  background: #2B2A33;
 }
 .tabbrowser-tab:hover::before,
 .tabbrowser-tab:hover::after {
@@ -79,46 +148,61 @@ body {
 .tabbrowser-tab:active,
 .tabbrowser-tab[selected="true"] {
   z-index: 1;
+  background: #fff;
+}
+html[lwtheme-brighttext="true"] .tabbrowser-tab:active,
+html[lwtheme-brighttext="true"] .tabbrowser-tab[selected="true"] {
+  background: #42414D;
 }
 .tabbrowser-tab:active::before,
 .tabbrowser-tab[selected="true"]::before,
 .tabbrowser-tab:active::after,
 .tabbrowser-tab[selected="true"]::after {
   opacity: 1;
-  background: light-dark(#fff, #42414D);
+  background: #fff;
+}
+html[lwtheme-brighttext="true"] .tabbrowser-tab:active::before,
+html[lwtheme-brighttext="true"] .tabbrowser-tab[selected="true"]::before,
+html[lwtheme-brighttext="true"] .tabbrowser-tab:active::after,
+html[lwtheme-brighttext="true"] .tabbrowser-tab[selected="true"]::after {
+  background: #42414D;
 }
 #tabbrowser-tabs:not([movingtab]) .tabbrowser-tab:not([pinned]) {
   transition: min-width 250ms cubic-bezier(0.2, 0, 0, 1), max-width 250ms cubic-bezier(0.2, 0, 0, 1) !important;
 }
 .tabbrowser-tab:not([labelendaligned], :hover) > .tab-stack > .tab-content > .tab-close-button {
   width: 24px !important;
-  padding-left: 7px !important;
+  padding: 6px !important;
 }
 .tab-close-button {
   transition: width 100ms ease, -webkit-padding-start 100ms ease;
   transition: width 100ms ease, padding-inline-start 100ms ease;
   transition: width 100ms ease, padding-inline-start 100ms ease, -webkit-padding-start 100ms ease;
+  border-radius: 50% !important;
 }
 .tab-close-button:hover,
 .tab-close-button:active {
-  border-radius: 50% !important;
   transition: all 0ms !important;
 }
 .tab-background {
   height: 100% !important;
   border-radius: 10px 10px 0 0 !important;
   box-shadow: -1px 0 0 rgba(0, 0, 0, 0.01) inset;
-  background-color: light-dark(#EAECEF, #42414D) !important;
+  background-color: #EAECEF!important;
   opacity: 0;
   transition: opacity 400ms cubic-bezier(0, 0.5, 0, 1);
 }
-/* .tab-content{
-	padding-top: 3px;
-} */
+html[lwtheme-brighttext="true"] .tab-background {
+  background-color: #42414D!important;
+}
 #TabsToolbar #firefox-view-button:hover:not([open]) > .toolbarbutton-icon,
 .tabbrowser-tab:hover > .tab-stack > .tab-background:not([selected], [multiselected]) {
-  background-color: light-dark(#EAECEF, #2B2A33) !important;
+  background-color: #EAECEF!important;
   opacity: 1;
+}
+html[lwtheme-brighttext="true"] #TabsToolbar #firefox-view-button:hover:not([open]) > .toolbarbutton-icon,
+html[lwtheme-brighttext="true"] .tabbrowser-tab:hover > .tab-stack > .tab-background:not([selected], [multiselected]) {
+  background-color: #2B2A33!important;
 }
 #TabsToolbar #firefox-view-button[open] > .toolbarbutton-icon,
 #tabbrowser-tabs:not([noshadowfortests]) .tab-background:is([selected], [multiselected]) {
@@ -127,15 +211,23 @@ body {
 #TabsToolbar #firefox-view-button[open] > .toolbarbutton-icon,
 .tab-background:is([selected],
 	[multiselected]) {
-  background: light-dark(#fff, #42414D) !important;
+  background: #fff!important;
   opacity: 1;
   transition: 0ms;
 }
+html[lwtheme-brighttext="true"] #TabsToolbar #firefox-view-button[open] > .toolbarbutton-icon,
+html[lwtheme-brighttext="true"] .tab-background:is([selected],
+	[multiselected]) {
+  background: #42414D!important;
+}
 .tab-content {
-  padding: 2px;
+  padding-top: var(--tab-top-margin) !important;
 }
 .browser-toolbar:not(.titlebar-color) {
-  background: light-dark(#fff, #42414D) !important;
+  background: #fff!important;
+}
+html[lwtheme-brighttext="true"] .browser-toolbar:not(.titlebar-color) {
+  background: #42414D!important;
 }
 toolbarbutton.bookmark-item:not(.subviewbutton) {
   padding: 6px !important;
@@ -172,7 +264,6 @@ toolbar .toolbarbutton-1:not([open], [checked], :hover:active) > .toolbarbutton-
   background-color: transparent!important;
 }
 panelview .toolbarbutton-1:not([disabled]):hover,
-toolbarbutton.subviewbutton:not([disabled]):hover,
 .widget-overflow-list .toolbarbutton-1:not([disabled]):hover {
   background: transparent!important;
 }
@@ -199,4 +290,31 @@ toolbarbutton.subviewbutton:not([disabled]):hover,
 .PanelUI-subView toolbarseparator.proton-zap {
   -o-border-image: none!important;
      border-image: none!important;
+}
+#sidebar-search-container {
+  padding: 8px 15px!important;
+}
+#search-box {
+  -webkit-appearance: none!important;
+     -moz-appearance: none!important;
+          appearance: none!important;
+  background-color: rgba(0, 0, 0, 0.05) !important;
+  border-radius: 30px!important;
+  padding: 8px 13px!important;
+  transition: background-color 400ms cubic-bezier(0, 0.5, 0, 1);
+}
+#search-box:hover {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
+#search-box[focused="true"] {
+  transition: 0ms;
+  background-color: #fff !important;
+  box-shadow: 0 0 0 2px #0078D7, 0 3px 6px 2px rgba(0, 120, 215, 0.05);
+}
+#viewButton {
+  -webkit-margin-start: 5px!important;
+          margin-inline-start: 5px!important;
+  border-radius: 30px!important;
+  padding: 5px 10px !important;
+  border: 0px!important;
 }

@@ -58,12 +58,13 @@ body {
   --tab-multiselected-hovered-color: color-mix(in oklab, var(--focus-outline-color) 10%, var(--tab-hovered-color));
   /* tab separator */
   --tab-separator-margin: 8px;
-  --tab-separator-width: 2px;
   /*set to 0 to disable separators*/
+  --tab-separator-width: 2px;
   --tab-separator-color: rgba(0, 0, 0, 0.1);
   /* url/search bar */
   --urlbar-icon-border-radius: 20px;
-  --urlbar-container-padding: 5px;
+  --urlbar-container-padding: 1px;
+  --urlbar-margin-inline: 10px;
   /* accent colors */
   --system-color-accent: #1E64D4;
   --system-color-accent-hover: color-mix(in oklab, #fff 10%, var(--system-color-accent));
@@ -92,22 +93,31 @@ html[lwtheme-brighttext="true"] body {
   --browser-background: #1C1B22;
 }
 html[lwtheme-brighttext="true"] body {
-  --tab-hovered-color: #42414D;
+  --tab-hovered-color: hsl(245, 8%, 25%);
 }
 html[lwtheme-brighttext="true"] body {
   --tab-selected-color: #42414D;
 }
+html[lwtheme-brighttext="true"] body {
+  --tab-multiselected-color: color-mix(in oklab, var(--focus-outline-color) 10%, var(--tab-selected-color));
+}
+html[lwtheme-brighttext="true"] body {
+  --tab-separator-color: rgba(255, 255, 255, 0.1);
+}
 #tabbrowser-tabs ~ #alltabs-button {
   display: flex;
+  margin-left: 40px !important;
 }
 #TabsToolbar {
   background: var(--browser-background);
 }
-.titlebar-spacer[type="post-tabs"],
+.titlebar-spacer[type="post-tabs"] {
+  display: none;
+}
 .titlebar-spacer[type="pre-tabs"] {
   display: none;
 }
-#tabbrowser-tabs {
+#new-tab-button {
   margin-right: 40px;
 }
 #TabsToolbar .toolbarbutton-1 > .toolbarbutton-icon,
@@ -138,6 +148,14 @@ html[lwtheme-brighttext="true"] body {
 }
 #tabbrowser-arrowscrollbox[overflowing="true"] {
   padding-left: 8px;
+}
+#tabbrowser-arrowscrollbox::part(scrollbutton-up),
+#tabbrowser-arrowscrollbox::part(scrollbutton-down) {
+  border-top: var(--tab-top-margin) solid transparent !important;
+}
+#tabs-newtab-button,
+#TabsToolbar #new-tab-button {
+  padding-top: var(--tab-top-margin) !important;
 }
 .tabbrowser-tab {
   padding: 0px !important;
@@ -196,6 +214,9 @@ html[lwtheme-brighttext="true"] body {
 }
 .tabbrowser-tab[multiselected="true"] .tab-label-container {
   color: color-mix(in oklab, #000 10%, var(--focus-outline-color));
+}
+html[lwtheme-brighttext="true"] .tabbrowser-tab[multiselected="true"] .tab-label-container {
+  color: #fff;
 }
 .tabbrowser-tab[multiselected="true"]::before,
 .tabbrowser-tab[multiselected="true"]::after {
@@ -374,6 +395,30 @@ panelview .toolbarbutton-1:not([disabled]):hover,
   padding: 5px 10px !important;
   border: 0px !important;
 }
+#urlbar-container,
+#search-container {
+  margin-inline: var(--urlbar-margin-inline);
+}
+.urlbarView {
+  margin-inline: var(--urlbar-margin-inline) !important;
+  width: calc(100% - 2 * var(--urlbar-margin-inline)) !important;
+}
+*::-moz-selection {
+  background-color: var(--color-accent-primary) !important;
+}
+*::selection {
+  background-color: var(--color-accent-primary) !important;
+}
+#urlbar #urlbar-input-container {
+  cursor: text;
+}
+#urlbar #urlbar-input-container > box,
+#urlbar #urlbar-input-container > hbox,
+#urlbar #urlbar-input-container .urlbar-page-action,
+#urlbar #urlbar-input-container #urlbar-go-button,
+#urlbar #urlbar-input-container .search-go-button {
+  cursor: default;
+}
 #urlbar[focused="true"]:not([suppress-focus-border]) > #urlbar-background,
 #searchbar:focus-within {
   outline: var(--focus-outline);
@@ -388,11 +433,27 @@ panelview .toolbarbutton-1:not([disabled]):hover,
 #urlbar[open] > #urlbar-background {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1) !important;
 }
+@-webkit-keyframes urlbar-grow-2 {
+  from {
+    -webkit-transform: scaleX(0.98) scaleY(0.95);
+            transform: scaleX(0.98) scaleY(0.95);
+  }
+}
+@keyframes urlbar-grow-2 {
+  from {
+    -webkit-transform: scaleX(0.98) scaleY(0.95);
+            transform: scaleX(0.98) scaleY(0.95);
+  }
+}
 #urlbar[breakout][breakout-extend] > #urlbar-background {
-  -webkit-animation-timing-function: cubic-bezier(0, 1, 0, 1) !important;
-          animation-timing-function: cubic-bezier(0, 1, 0, 1) !important;
-  -webkit-animation-duration: 400ms !important;
-          animation-duration: 400ms !important;
+  -webkit-animation: urlbar-grow-2 0ms cubic-bezier(0, 1, 0, 1) !important;
+          animation: urlbar-grow-2 0ms cubic-bezier(0, 1, 0, 1) !important;
+}
+@media (prefers-reduced-motion: no-preference) {
+  #urlbar[breakout][breakout-extend] > #urlbar-background {
+    -webkit-animation-duration: 300ms !important;
+            animation-duration: 300ms !important;
+  }
 }
 #urlbar[breakout][breakout-extend] > #urlbar-input-container {
   height: var(--urlbar-toolbar-height);
@@ -403,8 +464,34 @@ panelview .toolbarbutton-1:not([disabled]):hover,
   background: rgba(0, 0, 0, 0.01);
   padding: 3px 5px !important;
   margin-top: 5px;
-  margin-bottom: calc(5px + var(--urlbar-container-padding));
+  margin-bottom: var(--urlbar-margin-inline);
   box-sizing: border-box;
   border-radius: calc(var(--urlbar-icon-border-radius) - 6px);
-  border: 1px solid rgba(0, 0, 0, 0.03) !important;
+  border: 1px solid rgba(0, 0, 0, .03)!important;
+}
+html[lwtheme-brighttext="true"] #urlbar .search-one-offs:not([hidden]) {
+  background: rgba(255, 255, 255, 0.02);
+}
+html[lwtheme-brighttext="true"] #urlbar .search-one-offs:not([hidden]) {
+  border: 1px solid rgba(255, 255, 255, .05)!important;
+}
+@-webkit-keyframes sidebar-animate {
+  from {
+    -webkit-transform: translateX(100%);
+            transform: translateX(100%);
+    opacity: 0;
+  }
+}
+@keyframes sidebar-animate {
+  from {
+    -webkit-transform: translateX(100%);
+            transform: translateX(100%);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  #sidebar-box {
+    -webkit-animation: sidebar-animate 200ms cubic-bezier(0, 1, 0, 1);
+            animation: sidebar-animate 200ms cubic-bezier(0, 1, 0, 1);
+  }
 }

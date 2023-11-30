@@ -25,6 +25,7 @@
 @tab-separator-margin: 8px;
 @tab-separator-width: 2px; // set to 0 to disable separators
 @tab-separator-color: rgba(0, 0, 0, .1);
+@tab-separator-color-dark: rgba(255,255,255, .1);
 
 
 // Utilities //
@@ -32,6 +33,8 @@
 @snap-easing : cubic-bezier(0, .5, 0, 1);
 @snap-easing2 : cubic-bezier(0, .8, 0, 1);
 @snap-easing3 : cubic-bezier(0, 1, 0, 1);
+@bounce-easing:cubic-bezier(0.41, 0, 0, 1.3);
+@bounce-snap-easing:cubic-bezier(0,1.8,.2,.8);
 
 // for managing light and dark theme
 .light-dark(@option, @light, @dark) {
@@ -54,6 +57,11 @@
 		@{option}: @windowed;
 	}
 }
+.if-animations-allowed(@option, @value) {
+	@media (prefers-reduced-motion: no-preference) {
+		@{option}: @value;
+	}
+}
 
 body {
 	// defining variables on body to avoid putting !important everywhere
@@ -72,20 +80,25 @@ body {
 	/* tabs */
 	--tab-font-weight:@tab-font-weight;
 	.light-dark(--browser-background, @browser-background, @browser-background-dark);
-	.light-dark(--tab-hovered-color, #EAECEF, #42414D);
+	.light-dark(--tab-hovered-color, #EAECEF, hsl(245, 8%, 25%));
 	.light-dark(--tab-selected-color, #fff, #42414D);
-	--tab-multiselected-color: color-mix(in oklab, var(--focus-outline-color) 20%, var(--tab-hovered-color));
+	.light-dark(
+		--tab-multiselected-color,
+		color-mix(in oklab, var(--focus-outline-color) 20%, var(--tab-hovered-color)),
+		color-mix(in oklab, var(--focus-outline-color) 10%, var(--tab-selected-color))
+	);
 	--tab-multiselected-hovered-color: color-mix(in oklab, var(--focus-outline-color) 10%, var(--tab-hovered-color));
 
 	/* tab separator */
 	--tab-separator-margin: @tab-separator-margin;
-	--tab-separator-width: @tab-separator-width;
 	/*set to 0 to disable separators*/
-	--tab-separator-color: @tab-separator-color;
+	--tab-separator-width: @tab-separator-width;
+	.light-dark(--tab-separator-color, @tab-separator-color, @tab-separator-color-dark);
 
 	/* url/search bar */
 	--urlbar-icon-border-radius: 20px;
-	--urlbar-container-padding: 5px;
+	--urlbar-container-padding: 1px;
+	--urlbar-margin-inline:10px;
 
 	/* accent colors */
 	--system-color-accent: @accent-color;
@@ -112,18 +125,21 @@ body {
 
 #tabbrowser-tabs~#alltabs-button {
 	display: if(@hide-all-tabs-button, none, flex);
+	margin-left:if(@hide-all-tabs-button, 0, 40px)!important;
 }
 
 #TabsToolbar {
 	background: var(--browser-background);
 }
 
-.titlebar-spacer[type="post-tabs"],
+.titlebar-spacer[type="post-tabs"]{
+	display: if(@hide-all-tabs-button,flex,none);
+}
 .titlebar-spacer[type="pre-tabs"] {
 	display: none;
 }
 
-#tabbrowser-tabs {
+#new-tab-button {
 	margin-right: 40px;
 }
 
@@ -161,6 +177,16 @@ body {
 	&[overflowing="true"] {
 		padding-left: 8px;
 	}
+
+}
+#tabbrowser-arrowscrollbox::part(scrollbutton-up),
+#tabbrowser-arrowscrollbox::part(scrollbutton-down) {
+	border-top: var(--tab-top-margin) solid transparent!important;
+}
+
+#tabs-newtab-button,
+#TabsToolbar #new-tab-button {
+	padding-top:var(--tab-top-margin)!important;
 }
 
 .tabbrowser-tab {
@@ -226,7 +252,7 @@ body {
 
 	&[multiselected="true"] {
 		.tab-label-container {
-			color: color-mix(in oklab, #000 10%, var(--focus-outline-color));
+			.light-dark(color,color-mix(in oklab, #000 10%, var(--focus-outline-color)),#fff);
 		}
 
 		&::before,
@@ -450,6 +476,32 @@ panelview .toolbarbutton-1,
 }
 
 // Url bar //
+#urlbar-container,
+#search-container{
+	margin-inline: var(--urlbar-margin-inline);
+}
+
+.urlbarView{
+	margin-inline: var(--urlbar-margin-inline)!important;
+  width: calc(100% - 2 * var(--urlbar-margin-inline))!important;
+}
+
+*::selection{
+	background-color:var(--color-accent-primary)!important;
+}
+
+#urlbar{
+	#urlbar-input-container{
+		cursor:text;
+		& > box,
+		& > hbox,
+		.urlbar-page-action,
+		#urlbar-go-button,
+		.search-go-button{
+			cursor:default;
+		}
+	}
+}
 #urlbar[focused="true"]:not([suppress-focus-border])>#urlbar-background,
 #searchbar:focus-within {
 	//redefining it just in case
@@ -468,9 +520,15 @@ panelview .toolbarbutton-1,
 	box-shadow: 0 5px 10px rgba(0, 0, 0, .1) !important;
 }
 
-#urlbar[breakout][breakout-extend]>#urlbar-background {
-	animation-timing-function: @snap-easing3 !important;
-	animation-duration: 400ms !important;
+@keyframes urlbar-grow-2 {
+  from {
+    transform: scaleX(.98) scaleY(.95);
+  }
+}
+
+#urlbar[breakout][breakout-extend] > #urlbar-background {
+	animation: urlbar-grow-2 0ms @snap-easing3!important;
+	.if-animations-allowed(animation-duration, ~"300ms !important");
 }
 
 #urlbar[breakout][breakout-extend]>#urlbar-input-container {
@@ -483,11 +541,26 @@ panelview .toolbarbutton-1,
 #urlbar .search-one-offs:not([hidden]) {
 	@spacing: 6px;
 	// border-top:none!important;
-	background: rgba(0, 0, 0, .01);
+	.light-dark(background,rgba(0, 0, 0, .01),rgba(255,255,255, .02));
 	padding: 3px 5px !important;
 	margin-top: 5px;
-	margin-bottom: calc(5px + var(--urlbar-container-padding));
+	margin-bottom: var(--urlbar-margin-inline);
 	box-sizing: border-box;
 	border-radius: calc(var(--urlbar-icon-border-radius) - @spacing);
-	border: 1px solid rgba(0, 0, 0, .03) !important;
+	.light-dark(border,~"1px solid rgba(0, 0, 0, .03)!important",~"1px solid rgba(255, 255, 255, .05)!important");
+}
+// .urlbar-page-action{
+// 	padding:0!important;
+// 	align-items: center;
+// 	width:auto;
+// }
+// Sidebar //
+@keyframes sidebar-animate{
+	from{
+		transform: translateX(100%);
+		opacity:0;
+	}
+}
+#sidebar-box{
+	.if-animations-allowed(animation,sidebar-animate 200ms @snap-easing3);
 }

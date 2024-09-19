@@ -188,20 +188,22 @@ body {
 #TabsToolbar #new-tab-button {
 	padding-top:var(--tab-top-margin)!important;
 }
-
+#tabbrowser-tabs[overflow]{
+	padding-inline: calc(var(--tab-overflow-pinned-tabs-width) + 8px) 0!important;
+}
 .tabbrowser-tab {
 	padding: 0px !important;
 	overflow-clip-margin: var(--tab-border-radius) !important;
 	position: relative;
 	z-index: 0;
-
-	#tabbrowser-arrowscrollbox:not([overflowing="true"]) &:first-child {
+	
+	#tabbrowser-tabs:not([overflow]) &:first-child{
 		margin-left: 8px !important;
 	}
 
-	#tabbrowser-arrowscrollbox[overflowing="true"] &[pinned="true"] {
-		transform: translate(8px, 0);
-	}
+	// #tabbrowser-tabs[positionpinnedtabs] > #tabbrowser-arrowscrollbox > &[pinned]{
+	// 	transform: translateX(8px);
+	// }
 
 	&::before,
 	&::after {

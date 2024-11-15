@@ -82,6 +82,8 @@ body {
   --focus-outline-width: 2px;
   --focus-outline-inset: calc(-1 * var(--focus-outline-width));
   --focus-outline-offset: 2px;
+  /* opacity of toolbars when window is in background */
+  --inactive-titlebar-opacity: 0.85;
 }
 html[sizemode="normal"] body {
   --tab-top-margin: 10px;
@@ -103,6 +105,9 @@ html[lwtheme-brighttext="true"] body {
 }
 html[lwtheme-brighttext="true"] body {
   --tab-separator-color: rgba(255, 255, 255, 0.1);
+}
+#tabbrowser-tabs[orient="horizontal"] {
+  min-height: unset !important;
 }
 #tabbrowser-tabs ~ #alltabs-button {
   display: flex;
@@ -302,8 +307,11 @@ html[lwtheme-brighttext="true"] .tabbrowser-tab[multiselected="true"] .tab-label
 #tabbrowser-arrowscrollbox:not([overflowing="true"]) .tabbrowser-tab:first-child .tab-content::after {
   display: none;
 }
-.browser-toolbar:not(.titlebar-color) {
+.browser-toolbar:not(.browser-titlebar) {
   background: var(--tab-selected-color) !important;
+}
+.browser-toolbar:-moz-window-inactive {
+  opacity: var(--inactive-titlebar-opacity);
 }
 toolbarbutton.bookmark-item:not(.subviewbutton) {
   padding: 6px !important;
